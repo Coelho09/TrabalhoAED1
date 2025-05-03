@@ -118,3 +118,12 @@ void essencial(ListaI* l){
         printf("ingrediente não foi encontrado.");
     }
 }
+
+void percorrerI(ListaI* l){
+    No* aux = l->inicio;
+    
+    while (aux != NULL){
+        printf("%s \n", aux->ingrediente);
+        aux = aux->prox;
+    }
+}

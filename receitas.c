@@ -16,7 +16,7 @@ ListaR* criarListaR(){
 NoR* criarNovoNoR(char receita[]){
     NoR* novoNoR = (NoR*) malloc(sizeof(NoR));
     novoNoR->prox = NULL;
-    novoNoR->ingredientes = NULL;
+    novoNoR->ingredientes = criarListaI();
     strcpy(novoNoR->receita, receita);
     
     return novoNoR;
@@ -64,6 +64,40 @@ void removerR(ListaR* r, char receita[]){
         free(aux);
     } else{
         printf("Ingrediente não encontrado");
+    }
+}
+
+NoR* procurarR(ListaR* r, char receita[]){
+    NoR* aux = r->inicio;
+    int achou = 0;
+    
+    while(aux != NULL){
+        if(strcmp(aux->receita,receita) == 0){
+            achou = 1; break;
+        }
+        aux = aux->prox;
+    }
+    if(achou == 1){
+        return aux;
+    } else {
+        printf("Receita não encontrada.");
+        return NULL;
+    }
+}
+
+NoR* percorrerR(ListaR* r){
+    NoR* aux = r->inicio;
+    No*  auxI;
+    
+    while (aux != NULL){
+        printf("Receita: %s\n", aux->receita);
+        auxI = aux->ingredientes->inicio;
+        printf("Ingredientes: \n");
+        while(auxI != NULL){
+            printf("%s\n", auxI->ingrediente);
+            auxI = auxI->prox;
+        }
+        aux = aux->prox;
     }
 }
 

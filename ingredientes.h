@@ -1,6 +1,8 @@
 #ifndef INGREDIENTES_H
 #define INGREDIENTES_H
 
+#include "dados.h"
+
 typedef struct no{
     char ingrediente[100];
     int essencial;
@@ -14,10 +16,11 @@ typedef struct ListaI{
     int quantidade;
 } ListaI;
 
+
 ListaI* criarListaI();
 No* criarNovoNo(char ingrediente[]);
-void inserirI(ListaI* l, char ingrediente[]);
-void removerI(ListaI* l, char ingrediente[]);
+void inserirI(ListaR* r, char receitaC[], char ingrediente[]);
+void removerI(ListaR* r, char receitaC[], char ingrediente[]);
 void substituir(ListaI* l, char ingrediente[], char Ningrediente[]);
 void essencial(ListaI* l);
 void percorrerI(ListaI* l);

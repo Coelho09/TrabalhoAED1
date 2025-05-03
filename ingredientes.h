@@ -20,5 +20,6 @@ void inserirI(ListaI* l, char ingrediente[]);
 void removerI(ListaI* l, char ingrediente[]);
 void substituir(ListaI* l, char ingrediente[], char Ningrediente[]);
 void essencial(ListaI* l);
+void percorrerI(ListaI* l);
 
 #endif

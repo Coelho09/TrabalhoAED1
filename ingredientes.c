@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "receitas.h"
 #include "ingredientes.h"
 
 ListaI* criarListaI(){
@@ -14,6 +15,7 @@ ListaI* criarListaI(){
 
 No* criarNovoNo(char ingrediente[]){
     No* novoNo = (No*) malloc(sizeof(No));
+    if (novoNo == NULL) return NULL;
     novoNo->prox = NULL;
     novoNo->ant = NULL;
     strcpy(novoNo->ingrediente, ingrediente);
@@ -22,32 +24,35 @@ No* criarNovoNo(char ingrediente[]){
     return novoNo;
 }
 
-void inserirI(ListaI* l, char ingrediente[]){
-    if(l == NULL){
+void inserirI(ListaR* r, char receitaC[], char ingrediente[]){
+    if(r == NULL){
         printf("Lista não existe");
         return;
     }
-    No* novoNo = criarNovoNo(ingrediente);
     
-    if(l->inicio == NULL){
-        l->inicio = novoNo;
-        l->fim = novoNo;
+    No* novoNo = criarNovoNo(ingrediente);
+    NoR* receita = procurarR(r, receitaC);
+    
+    if(receita->ingredientes->inicio == NULL){
+        receita->ingredientes->inicio = novoNo;
+        receita->ingredientes->fim = novoNo;
     } else {
-        novoNo->ant = l->fim;
-        l->fim->prox = novoNo;
-        l->fim = novoNo;
+        novoNo->ant = receita->ingredientes->fim;
+        receita->ingredientes->fim->prox = novoNo;
+        receita->ingredientes->fim = novoNo;
     }
-    l->quantidade++;
+    receita->ingredientes->quantidade++;
 }
 
-void removerI(ListaI* l, char ingrediente[]){
-    if(l == NULL){
+void removerI(ListaR* r, char receitaC[], char ingrediente[]){
+    if(r == NULL){
         printf("Lista não existe");
         return;
     }
     int achou = 0;
+    NoR* receita = procurarR(r, receitaC);
     
-    No* aux = l->inicio; 
+    No* aux = receita->ingredientes->inicio; 
     while(aux != NULL){
         if(strcmp(aux->ingrediente, ingrediente) == 0){
         achou = 1; break;    
@@ -58,15 +63,15 @@ void removerI(ListaI* l, char ingrediente[]){
     if(achou == 1){
         if(aux->ant == NULL){
             aux->prox->ant = NULL;
-            l->inicio = aux->prox;
-        } else if(aux == l->fim){
+            receita->ingredientes->inicio = aux->prox;
+        } else if(aux == receita->ingredientes->fim){
             aux->ant->prox = NULL;
-            l->fim = aux->ant;
+            receita->ingredientes->fim = aux->ant;
         } else {
             aux->ant->prox = aux->prox;
             aux->prox->ant = aux->ant;
         }
-        l->quantidade--;
+        receita->ingredientes->quantidade--;
         free(aux);
     } else{
         printf("Ingrediente não encontrado");

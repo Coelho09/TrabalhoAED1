@@ -39,15 +39,17 @@ No* criarNovoNo(char ingrediente[]) {
    Caso contrário, ele é adicionado ao final da lista.
 */
 void inserirI(ListaR* r, char receitaC[], char ingrediente[]) {
-    if (r == NULL) {
-        printf("Lista não existe");
+    if (r == NULL ) {
+        printf("Lista de receitas não existe.\n");
         return;
     }
 
     No* novoNo = criarNovoNo(ingrediente);
     NoR* receita = procurarR(r, receitaC);
 
-    if (receita->ingredientes->inicio == NULL) {
+
+    if(receita != NULL) {
+        if (receita->ingredientes->inicio == NULL) {
         receita->ingredientes->inicio = novoNo;
         receita->ingredientes->fim = novoNo;
     } else {
@@ -55,8 +57,8 @@ void inserirI(ListaR* r, char receitaC[], char ingrediente[]) {
         receita->ingredientes->fim->prox = novoNo;
         receita->ingredientes->fim = novoNo;
     }
-
     receita->ingredientes->quantidade++;
+  } else printf("Receita não encontrada!\n");
 }
 
 /*
@@ -65,16 +67,27 @@ void inserirI(ListaR* r, char receitaC[], char ingrediente[]) {
    Se o ingrediente não for encontrado, exibe uma mensagem de erro.
 */
 void removerI(ListaR* r, char receitaC[], char ingrediente[]) {
-    if (r == NULL) {
-        printf("Lista não existe");
+    if (r == NULL || r->inicio == NULL) {
+        printf("Lista de receitas vazia ou não existe.\n");
         return;
     }
 
-    int achou = 0;
     NoR* receita = procurarR(r, receitaC);
+        if(receita == NULL){
+        printf("Receita nao encontrada\n");
+        return;
+    }
+    
+    if (receita->ingredientes == NULL || receita->ingredientes->inicio == NULL) {
+        printf("Lista de ingredientes vazia para a receita '%s'.\n", receitaC);
+        return;
+    }
+    
+    
+    int achou = 0;
     No* aux = receita->ingredientes->inicio;
-
-    while (aux != NULL) {
+    
+    while (aux != NULL || aux->prox != NULL) {
         if (strcmp(aux->ingrediente, ingrediente) == 0) {
             achou = 1;
             break;
@@ -84,8 +97,13 @@ void removerI(ListaR* r, char receitaC[], char ingrediente[]) {
 
     if (achou == 1) {
         if (aux->ant == NULL) {
-            aux->prox->ant = NULL;
             receita->ingredientes->inicio = aux->prox;
+            if (aux->prox != NULL) {
+            aux->prox->ant = NULL;
+            } else {
+            receita->ingredientes->inicio = NULL;
+            receita->ingredientes->fim = NULL;
+            }
         } else if (aux == receita->ingredientes->fim) {
             aux->ant->prox = NULL;
             receita->ingredientes->fim = aux->ant;
@@ -96,7 +114,7 @@ void removerI(ListaR* r, char receitaC[], char ingrediente[]) {
         receita->ingredientes->quantidade--;
         free(aux);
     } else {
-        printf("Ingrediente não encontrado");
+        printf("Ingrediente não encontrado\n");
     }
 }
 
@@ -106,7 +124,18 @@ void removerI(ListaR* r, char receitaC[], char ingrediente[]) {
    Se o ingrediente original for encontrado, seu nome é atualizado.
 */
 void substituir(ListaR* r, char receitaC[], char ingrediente[], char Ningrediente[]) {
+     if (r == NULL || r->inicio == NULL) {
+        printf("Lista de receitas vazia ou não existe.\n");
+        return;
+    }
+    
     NoR* receita = procurarR(r, receitaC);
+    
+    if(receita == NULL){
+        printf("Receita nao encontrada\n");
+        return;
+    }
+    
     int achou = 0;
     int achouI = 0;
     No* aux = receita->ingredientes->inicio;
@@ -141,6 +170,10 @@ void substituir(ListaR* r, char receitaC[], char ingrediente[], char Ningredient
    Solicita ao usuário o nome do ingrediente e atualiza seu status se for encontrado.
 */
 void essencial(ListaR* r, char receitaC[]) {
+    if (r == NULL || r->inicio == NULL) {
+        printf("Lista de receitas vazia ou não existe.\n");
+        return;
+    }
     char ingrediente[100];
     int achou = 0;
 
@@ -149,6 +182,10 @@ void essencial(ListaR* r, char receitaC[]) {
     ingrediente[strcspn(ingrediente, "\n")] = '\0'; // remove o \n da leitura
 
     NoR* receita = procurarR(r, receitaC);
+    if(receita == NULL){
+        printf("Receita nao encontrada\n");
+        return;
+    }
     No* aux = receita->ingredientes->inicio;
 
     while (aux != NULL) {

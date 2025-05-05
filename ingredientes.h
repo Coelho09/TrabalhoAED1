@@ -59,4 +59,9 @@ void essencial(ListaR* r, char receitaC[]);
 */
 void percorrerI(ListaR* r, char receitaC[]);
 
+/*
+    Remove um ingrediente da lista de alguma receita.
+*/
+void removerI(ListaR* r, char receitaC[], char ingrediente[]);
+
 #endif

@@ -12,6 +12,7 @@
 typedef struct noR {
     char receita[100];
     ListaI* ingredientes;
+    int favorita;
     struct noR* prox;
 } NoR;
 
@@ -58,4 +59,14 @@ NoR* procurarR(ListaR* r, char receita[]);
 */
 NoR* percorrerR(ListaR* r);
 
+/*
+   Marca uma receita como favorita.
+   O usuário informa o nome da receita a ser marcada.
+*/
+void favoritar(ListaR* r, char receitaC[]);
+
+/*
+   Percorre e imprime todos os ingrediente essenciais e as receitas favoritas 
+*/
+void mostraEspeciais(ListaR* r);
 #endif

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ingredientes.h"
 #include "receitas.h"
 
 /*
@@ -20,6 +19,7 @@ int main() {
 
     ListaR* R = criarListaR();
     int opcao;
+    int antes;
     char receita[100];
     char ingrediente[100];
 
@@ -35,6 +35,9 @@ int main() {
         printf("3 - Remover Receita\n");
         printf("4 - Remover Ingrediente de Receita\n");
         printf("5 - Ver todas as receitas\n");
+        printf("6 - Marcar um Ingrediente como Essencial\n");
+        printf("7 - Marcar alguma Receita como Favorita\n");
+        printf("8 - Ver todos os Ingredientes Essenciais e Receitas favoritas\n");
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -59,7 +62,9 @@ int main() {
                 printf("Nome da receita: ");
                 fgets(receita, sizeof(receita), stdin);
                 receita[strcspn(receita, "\n")] = '\0';
+                antes = R->quantidade; 
                 inserirR(R, receita);
+                if(antes < R->quantidade) printf("Receita adicionada com sucesso!\n");
                 break;
 
                 /*
@@ -101,7 +106,9 @@ int main() {
                 printf("Nome da receita a remover: ");
                 fgets(receita, sizeof(receita), stdin);
                 receita[strcspn(receita, "\n")] = '\0';
+                antes = R->quantidade;
                 removerR(R, receita);
+                if(antes > R->quantidade) printf("Receita removida com sucesso");
                 break;
 
                  /*
@@ -117,7 +124,7 @@ int main() {
                 printf("Nome do ingrediente a remover: ");
                 fgets(ingrediente, sizeof(ingrediente), stdin);
                 ingrediente[strcspn(ingrediente, "\n")] = '\0';
-
+                
                 removerI(R, receita, ingrediente);
                 break;
 
@@ -128,6 +135,39 @@ int main() {
 
             case 5:
                 percorrerR(R);
+                system("pause");
+                break;
+            
+                /*
+                  Opção para marcar um ingrediete de alguma receita como essencial.
+                  a função essencial() procura a receita digitada pelo usuario e altera o campo ensencial para 1(verdadeiro).
+                */
+            
+            case 6:
+                printf("Digite o nome da receita em que esse ingrediente se encontra: ");
+                fgets(receita, sizeof(receita), stdin);
+                receita[strcspn(receita, "\n")] = '\0';
+                essencial (R, receita);
+                break;
+                
+                /*
+                  Opção para marcar uma receita como favorita.
+                  a função favorita() procura a receita digitada pelo usuario e altera o campo favorita para 1(verdadeiro).
+                */
+                
+            case 7:
+                printf("Digite o nome da receita que você deseja favoritar: ");
+                fgets(receita, sizeof(receita), stdin);
+                receita[strcspn(receita, "\n")] = '\0';
+                favoritar(R, receita);
+                break;
+                
+                /*
+                  Impressão de todas as receitas favoritas e os ingredientes essenciais da lista de receitas.
+                */
+                
+            case 8:
+                mostraEspeciais(R);
                 break;
 
                 /*

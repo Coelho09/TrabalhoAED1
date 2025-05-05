@@ -64,8 +64,8 @@ void inserirR(ListaR* r, char receita[]){
 */
 
 void removerR(ListaR* r, char receita[]){
-    if (r == NULL){
-        printf("Lista não existe");
+    if (r == NULL || r->inicio == NULL) {
+        printf("Lista de receitas vazia ou não existe.\n");
         return;
     }
 
@@ -96,7 +96,7 @@ void removerR(ListaR* r, char receita[]){
         r->quantidade--;
         free(aux);
     } else {
-        printf("Ingrediente não encontrado");
+        printf("Receita não encontrada");
     }
 }
 
@@ -121,7 +121,6 @@ NoR* procurarR(ListaR* r, char receita[]){
     if (achou == 1){
         return aux;
     } else {
-        printf("Receita não encontrada.");
         return NULL;
     }
 }
@@ -135,7 +134,8 @@ NoR* percorrerR(ListaR* r){
     NoR* aux = r->inicio;
     No* auxI;
     
-    while (aux != NULL){
+    if (aux != NULL){
+        while (aux != NULL){
         printf("Receita: %s\n", aux->receita);
         auxI = aux->ingredientes->inicio;
 
@@ -147,6 +147,58 @@ NoR* percorrerR(ListaR* r){
 
         aux = aux->prox;
     }
-
+  } else printf("\nLista esta vazia\n");
     return NULL; // Boa prática: retorna algo mesmo em função void*, se for o caso.
 }
+
+/*
+   Utiliza a função procurarR para achar a receita digitada pelo usuario 
+   e atualiza o campo favorita da mesma.
+*/
+void favoritar(ListaR* r, char receitaC[]){
+    
+    int achou = 0;
+    NoR* receita = procurarR(r, receitaC);
+    NoR* aux = receita;
+    
+    if(receita != NULL){
+    receita->favorita = 1;
+    } 
+}
+
+/* 
+   Percorre toda a lista de receitas e imprime o nome de cada uma que seja favorita,
+   alem disso imprime os ingredientes essenciais da lista de receitas.
+*/
+
+void mostraEspeciais(ListaR* r){
+    if (r == NULL || r->inicio == NULL) {
+        printf("Lista de receitas vazia ou não existe.\n");
+        return;
+    }
+    
+    NoR* aux = r->inicio;
+    NoR* aux2 = r->inicio;
+    No* auxI;
+    
+    printf("Receitas Favoritas:\n");
+    while (aux != NULL){
+        if(aux->favorita == 1){
+        printf ("%s\n", aux->receita);
+        }
+        aux = aux->prox;
+    }
+    
+    printf("Ingredientes essenciais:\n");
+    while (aux2 != NULL){
+        auxI = aux2->ingredientes->inicio;
+        while (auxI != NULL){
+            if(auxI->essencial == 1){
+            printf("%s\n", auxI->ingrediente);
+          }
+          auxI = auxI->prox;
+        }
+        aux2 = aux2->prox;
+  }
+}
+

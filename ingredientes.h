@@ -40,7 +40,7 @@ No* criarNovoNo(char ingrediente[]);
 /*
    Insere um ingrediente na lista de uma receita específica.
 */
-void inserirI(ListaR* r, char receitaC[], char ingrediente[]);
+int inserirI(ListaR* r, char receitaC[], char ingrediente[]);
 
 /*
    Substitui um ingrediente por outro dentro de uma receita.
@@ -63,5 +63,11 @@ void percorrerI(ListaR* r, char receitaC[]);
     Remove um ingrediente da lista de alguma receita.
 */
 void removerI(ListaR* r, char receitaC[], char ingrediente[]);
+
+/*
+    Remove um ingrediente da lista de alguma receita.
+*/
+
+void buscarIngrediente(ListaR* r, char ingrediente[]);
 
 #endif

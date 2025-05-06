@@ -141,7 +141,7 @@ NoR* percorrerR(ListaR* r){
 
         printf("Ingredientes:\n");
         while (auxI != NULL){
-            printf("%s\n", auxI->ingrediente);
+            printf(".%s\n", auxI->ingrediente);
             auxI = auxI->prox;
         }
 
@@ -156,6 +156,10 @@ NoR* percorrerR(ListaR* r){
    e atualiza o campo favorita da mesma.
 */
 void favoritar(ListaR* r, char receitaC[]){
+    if (r == NULL || r->inicio == NULL) {
+		printf("Lista de receitas vazia ou não existe.\n");
+		return;
+	}
     
     int achou = 0;
     NoR* receita = procurarR(r, receitaC);
